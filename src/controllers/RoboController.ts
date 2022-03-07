@@ -5,7 +5,7 @@ const commandIsValid = (command: string) => {
   return (command.trim().search(commandRegex))
 }
 
-const rotationRobot = (orientacao:string, command:string) => {
+const rotationRobot = (orientacao: string, command: string) => {
   const orientation = ['N', 'E', 'S', 'W']
   let rotacao = 0
 
@@ -54,6 +54,8 @@ const moveRobot = (x, y, foco) => {
 class RoboController {
   public async index (req: Request, res: Response): Promise<Response> {
     const command: string = req.body.command.toUpperCase()
+    let { x, y } = req.body
+    let foco = req.body.orientation
     const result = commandIsValid(command)
     if (result === -1) {
       return res.status(400).json(
@@ -63,11 +65,6 @@ class RoboController {
         }
       )
     }
-
-    let x = 0
-    let y = 0
-
-    let foco = 'N'
 
     const arrayCommand = command.split('')
     arrayCommand.forEach(e => {
